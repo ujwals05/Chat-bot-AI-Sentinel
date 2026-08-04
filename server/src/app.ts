@@ -56,6 +56,14 @@ if (config.nodeEnv === 'development') {
 // Routes
 app.use('/api/v1', chatRoutes);
 
+// Health route
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    message: 'Server is healthy',
+  });
+});
+
 // 404 Handler
 app.use(notFoundHandler);
 
