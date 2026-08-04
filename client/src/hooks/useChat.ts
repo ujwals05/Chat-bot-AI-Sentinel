@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import type { ChatMessage } from '../types/chat.types';
 import { chatApi } from '../services/chat.api';
@@ -41,7 +41,7 @@ export const useChat = () => {
     if (!content.trim()) return;
 
     const userMessage: ChatMessage = { role: 'user', content };
-    
+
     // Add user message to state immediately
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);

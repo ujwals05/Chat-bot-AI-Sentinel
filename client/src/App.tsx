@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChatWindow } from './components/chat/ChatWindow';
 import { Sidebar } from './components/chat/Sidebar';
 import { useChat } from './hooks/useChat';
