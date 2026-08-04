@@ -3,13 +3,24 @@ import { config } from '../../config/env.js';
 import { sentinelClient } from './sentinel.client.js';
 import type { SentinelIngestParams, SentinelIngestionPayload } from './sentinel.types.js';
 
+export interface SentinelCredentials {
+  apiKey: string;
+  applicationId: string;
+}
+
 class SentinelService {
   /**
    * Sends a chat interaction to SISA Sentinel for observability and evaluation.
    * This is a fire-and-forget method — it will never disrupt the main chat flow.
+   * Credentials are now provided dynamically per-request from the client.
    */
-  ingestInteraction(params: SentinelIngestParams): void {
+  ingestInteraction(params: SentinelIngestParams, credentials: SentinelCredentials): void {
     if (!config.sentinel.enabled) {
+      return;
+    }
+
+    if (!credentials.apiKey || !credentials.applicationId) {
+      console.warn('[SentinelService] Missing Sentinel credentials. Skipping ingestion.');
       return;
     }
 
@@ -35,7 +46,7 @@ class SentinelService {
 
     // Fire and forget
     sentinelClient
-      .sendIngestion(payload, idempotencyKey)
+      .sendIngestion(payload, idempotencyKey, credentials.apiKey)
       .then((result) => {
         if (result) {
           console.log(

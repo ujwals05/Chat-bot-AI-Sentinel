@@ -18,8 +18,6 @@ export const config = {
   },
   sentinel: {
     enabled: process.env.SENTINEL_ENABLED === 'true',
-    apiKey: process.env.SENTINEL_API_KEY || '',
-    applicationId: process.env.SENTINEL_APPLICATION_ID || '',
     ingestUrl: process.env.SENTINEL_INGEST_URL || '',
   },
   mongoUri: process.env.MONGODB_URI || '',

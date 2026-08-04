@@ -38,7 +38,7 @@ app.use(
       return callback(new Error(`CORS blocked origin: ${origin}`));
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'X-Application-Id'],
     credentials: true,
   })
 );

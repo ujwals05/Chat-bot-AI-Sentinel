@@ -16,7 +16,13 @@ export const handleChat = async (
       });
     }
 
-    const response = await chatService.handleChat(req.body);
+    // Extract Sentinel credentials from request headers (provided by client)
+    const sentinelCredentials = {
+      apiKey: (req.headers['x-api-key'] as string) || '',
+      applicationId: (req.headers['x-application-id'] as string) || '',
+    };
+
+    const response = await chatService.handleChat(req.body, sentinelCredentials);
 
     res.status(200).json({
       success: true,

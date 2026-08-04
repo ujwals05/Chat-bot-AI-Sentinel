@@ -2,6 +2,7 @@ import { ChatRequest, ChatResponse, ChatMessage } from '../types/chat.types.js';
 import { llmService } from './llm.service.js';
 import { config } from '../config/env.js';
 import { sentinelService } from '../integrations/sentinel/sentinel.service.js';
+import type { SentinelCredentials } from '../integrations/sentinel/sentinel.service.js';
 import crypto from 'crypto';
 
 interface InMemoryConversation {
@@ -13,7 +14,7 @@ interface InMemoryConversation {
 class ChatService {
   private conversations = new Map<string, InMemoryConversation>();
 
-  async handleChat(request: ChatRequest): Promise<ChatResponse> {
+  async handleChat(request: ChatRequest, sentinelCredentials: SentinelCredentials): Promise<ChatResponse> {
     const { messages: incomingMessages, conversationId: existingId } = request;
     
     // Generate a conversation ID if one is not provided
@@ -53,6 +54,7 @@ class ChatService {
 
 
     // Fire-and-forget Sentinel ingestion for observability & evaluation
+    // Uses credentials provided by the client in request headers
     sentinelService.ingestInteraction({
       conversationId,
       conversationTitle: lastUserMessage.content.substring(0, 50),
@@ -64,7 +66,7 @@ class ChatService {
         provider: config.llm.provider,
         environment: config.nodeEnv,
       }
-    });
+    }, sentinelCredentials);
 
     return {
       conversationId,

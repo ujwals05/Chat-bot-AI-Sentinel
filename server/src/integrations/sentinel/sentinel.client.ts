@@ -1,39 +1,42 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { config } from '../../config/env.js';
 import type { SentinelIngestionPayload, SentinelIngestionResult } from './sentinel.types.js';
 
 class SentinelClient {
-  private client: AxiosInstance | null = null;
-
-  constructor() {
-    if (config.sentinel.enabled && config.sentinel.ingestUrl && config.sentinel.apiKey) {
-      this.client = axios.create({
-        baseURL: config.sentinel.ingestUrl.replace(/\/ingest\/?$/, ''),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': config.sentinel.apiKey,
-        },
-        timeout: 5000,
-      });
-    }
-  }
-
+  /**
+   * Sends an ingestion payload to Sentinel using dynamically provided credentials.
+   * The API key and application ID come from request headers (user-provided),
+   * not from environment variables.
+   */
   async sendIngestion(
     payload: SentinelIngestionPayload,
-    idempotencyKey: string
+    idempotencyKey: string,
+    apiKey: string
   ): Promise<SentinelIngestionResult | null> {
-    if (!this.client) {
-      console.warn('[SentinelClient] Client is not configured. Check SENTINEL_* env vars.');
+    const ingestUrl = config.sentinel.ingestUrl;
+
+    if (!ingestUrl) {
+      console.warn('[SentinelClient] No SENTINEL_INGEST_URL configured.');
       return null;
     }
 
-    const response = await this.client.post<{ data: SentinelIngestionResult }>(
-      '/ingest',
+    if (!apiKey) {
+      console.warn('[SentinelClient] No API key provided in request. Skipping ingestion.');
+      return null;
+    }
+
+    const baseURL = ingestUrl.replace(/\/ingest\/?$/, '');
+
+    const response = await axios.post<{ data: SentinelIngestionResult }>(
+      `${baseURL}/ingest`,
       payload,
       {
         headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': apiKey,
           'Idempotency-Key': idempotencyKey,
         },
+        timeout: 5000,
       }
     );
 
