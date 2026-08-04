@@ -1,0 +1,134 @@
+# ==========================================
+# Dependencies
+# ==========================================
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.yarn-cache/
+
+# ==========================================
+# Environment Variables / Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Logs
+# ==========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ==========================================
+# Build / Production
+# ==========================================
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vite/
+.vercel/
+
+# ==========================================
+# TypeScript
+# ==========================================
+*.tsbuildinfo
+
+# ==========================================
+# Testing / Coverage
+# ==========================================
+coverage/
+.nyc_output/
+jest-results/
+test-results/
+
+# ==========================================
+# Prisma
+# ==========================================
+# Ignore Prisma generated client
+# Keep migration files tracked
+prisma/generated/
+
+# ==========================================
+# AI / ML / LLM Files
+# ==========================================
+# Local AI models
+models/
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.onnx
+
+# Vector database / local embeddings
+chroma/
+qdrant_storage/
+*.faiss
+
+# AI experiment outputs
+experiments/
+ai-outputs/
+evaluation-results/
+
+# ==========================================
+# Uploads / User Generated Files
+# ==========================================
+uploads/
+tmp/
+temp/
+
+# ==========================================
+# Database / Local Data
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ==========================================
+# IDE / Editors
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+.idea/
+*.iml
+
+# ==========================================
+# OS Files
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# React / Frontend
+# ==========================================
+*.local
+
+# ==========================================
+# Cache
+# ==========================================
+.cache/
+.parcel-cache/
+.eslintcache
+
+# ==========================================
+# Docker
+# ==========================================
+.docker/
+docker-compose.override.yml
+
+# ==========================================
+# Miscellaneous
+# ==========================================
+*.swp
+*.swo
+*.tmp
